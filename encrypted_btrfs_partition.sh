@@ -39,9 +39,6 @@ Example:
 
 "
 
-self_path="$(dirname $0)"
-. $self_path/lib.sh
-
 device=$1
 key_file=$2
 name=$3
@@ -52,6 +49,9 @@ if [ ! -e $device ] || [ -z $key_file ];
     echo $usage
     exit 1
 fi
+
+self_path="$(dirname $0)"
+. $self_path/lib.sh
 
 if [ ! -f $key_file ]; then
     >&2 echo "$key_file not found, so I'll generate a 512 bit random key for you."

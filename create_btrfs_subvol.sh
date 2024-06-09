@@ -18,8 +18,6 @@ Examples:
 
 "
 
-. $(dirname $0)/lib.sh
-
 BTRFS_OPTS="${BTRFS_OPTS:-defaults,noatime,discard=async,space_cache=v2,compress=lzo}"
 
 device="$1"
@@ -29,6 +27,8 @@ if [ ! -e $device ] || [ -z $mount_path ]; then
     echo $usage
     exit 1
 fi
+
+. $(dirname $0)/lib.sh
 
 # turns "/var/cache" into "@var_cache", or "/" into "@"
 subvolume=$(echo "@$(echo ${mount_path/\//} | sed "s#/#_#g")")

@@ -29,15 +29,15 @@ Example:
 
 "
 
-. $(dirname $0)/lib.sh
-
 device=${1}
 mount_point=${2:-/media/persistent}
-
 if [ ! -e $device ];
     echo $usage
     exit 1
 fi
+
+
+. $(dirname $0)/lib.sh
 
 # install required packages
 apk add sfdisk blkid
