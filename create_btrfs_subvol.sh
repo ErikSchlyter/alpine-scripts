@@ -23,8 +23,8 @@ BTRFS_OPTS="${BTRFS_OPTS:-defaults,noatime,discard=async,space_cache=v2,compress
 device="$1"
 mount_path="$2"
 
-if [ ! -e $device ] || [ -z $mount_path ]; then
-    echo $usage
+if [ ! -e "$device" ] || [ -z "$mount_path" ]; then
+    echo "$usage"
     exit 1
 fi
 

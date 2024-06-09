@@ -31,11 +31,13 @@ Example:
 
 device=${1}
 mount_point=${2:-/media/persistent}
-if [ ! -e $device ]; then
-    echo $usage
+
+if [ ! -e "$device" ]; then
+    echo "$usage"
     exit 1
 fi
 
+echo "whatafack '$device'"
 
 . $(dirname $0)/lib.sh
 

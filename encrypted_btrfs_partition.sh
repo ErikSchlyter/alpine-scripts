@@ -45,8 +45,8 @@ name=$3
 shift 3
 directories="${@%\/}"
 
-if [ ! -e $device ] || [ -z $key_file ]; then
-    echo $usage
+if [ ! -e "$device" ] || [ -z "$key_file" ]; then
+    echo "$usage"
     exit 1
 fi
 
