@@ -3,6 +3,8 @@
 # Creates a BTRFS subvolume on the given device, and replaces the given path
 # with a mount that is added to /etc/fstab
 #
+# requires: blkid btrfs-progs
+#
 # usage:
 #
 #   btrfs_subvol_fstab.sh <device> <mount_path>
