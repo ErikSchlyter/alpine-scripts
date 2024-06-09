@@ -30,11 +30,11 @@ is not supported.
 
 Example:
 
-    ./encrypted_btrfs_partition /dev/sda1 \\\n
-                                /root/myusbstick/crypto_keyfile.bin \\\n
-                                my-crypt-partition \\\n
-                                /home \\\n
-                                /opt \\\n
+    ./encrypted_btrfs_partition /dev/sda1 \\
+                                /root/myusbstick/crypto_keyfile.bin \\
+                                my-crypt-partition \\
+                                /home \\
+                                /opt \\
                                 /var/log
 
 "
@@ -46,7 +46,7 @@ shift 3
 directories="${@%\/}"
 
 if [ ! -e "$device" ] || [ -z "$key_file" ]; then
-    echo "$usage"
+    echo -e "$usage"
     exit 1
 fi
 
