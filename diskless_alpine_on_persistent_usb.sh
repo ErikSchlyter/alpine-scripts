@@ -50,15 +50,17 @@ modprobe vfat
 
 # add our USB media to /etc/fstab
 uuid=$(blkid $partition | sed 's/.* UUID="//' | sed 's/".*//')
-echo -e "UUID=$uuid\t/$mount_point\tvfat\tdefaults,noatime 0 0" >> /etc/fstab
+echo -e "UUID=$uuid\t$mount_point\tvfat\tdefaults,noatime 0 0" >> /etc/fstab
 
 # install our diskless Alpine installation on the disk
 mkdir -p -v $mount_point
 setup-bootable -v /media/cdrom $mount_point
 
+# update apk repo path
+sed -i "s#/media/cdrom/apks#$mount_point/apks#" /etc/apk/repositories
+
 # setup APK cache to our new media
 setup-apkcache $mount_point/cache
-sed -i "s#/media/cdrom/apks#/$mount_point/apks#" /etc/apk/repositories
 
 apk update
 apk cache download
@@ -70,6 +72,6 @@ sed -i "s%^# *LBU_BACKUPDIR=.*%LBU_BACKUPDIR=$mount_point%" /etc/lbu/lbu.conf
 # it is important to exclude the mount path from LBU in case you mount it under
 # a folder that is already included (e.g., /root/), otherwise lbu commit will go
 # haywire in an endless loop that consumes all memory.
-lbu exclude $mount_path
+lbu exclude $mount_point
 
 lbu commit
