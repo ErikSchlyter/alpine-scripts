@@ -21,24 +21,20 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
+. ./lib.sh
+
 BTRFS_OPTS="${BTRFS_OPTS:-defaults,noatime,discard=async,space_cache=v2,compress=lzo}"
 
 device="$1"
 mount_path="$2"
 
-# get the UUID of the device, so we know where to mount in fstab
-if uuid=$(blkid $device | sed 's/.* UUID="//' | sed 's/".*//'); then
-    file_system="UUID=$uuid"
-else
-    file_system=$device
-fi
 
 # turns "/var/cache" into "@var_cache", or "/" into "@"
 subvolume=$(echo "@$(echo ${mount_path/\//} | sed "s#/#_#g")")
 
 mount $device /mnt
 btrfs su create "/mnt/$subvolume"
-echo -e "$file_system\t$mount_path\tbtrfs\tsubvol=$subvolume,$BTRFS_OPTS 0 0" >> /etc/fstab
+echo -e "$(fstab_id $device)\t$mount_path\tbtrfs\tsubvol=$subvolume,$BTRFS_OPTS 0 0" >> /etc/fstab
 
 if [ "$mount_path" != "/" ]; then
     if [ -d $mount_path ]; then # the mount path already exists
