@@ -30,11 +30,11 @@ is not supported.
 
 Example:
 
-    ./encrypted_btrfs_partition /dev/sda1 \
-                                /root/myusbstick/crypto_keyfile.bin \
-                                my-crypt-partition \
-                                /home \
-                                /opt \
+    ./encrypted_btrfs_partition /dev/sda1 \\\n
+                                /root/myusbstick/crypto_keyfile.bin \\\n
+                                my-crypt-partition \\\n
+                                /home \\\n
+                                /opt \\\n
                                 /var/log
 
 "
