@@ -14,6 +14,11 @@
 #
 
 set -euo pipefail
+if [ "$(id -u)" -ne 0 ]; then
+    echo "Must be executed as root"
+    exit 1
+fi
+
 BTRFS_OPTS="${BTRFS_OPTS:-defaults,noatime,discard=async,space_cache=v2,compress=lzo}"
 
 device="$1"

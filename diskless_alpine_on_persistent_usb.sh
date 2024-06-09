@@ -27,6 +27,10 @@
 #   ./diskless_alpine_on_persistent_usb.sh /dev/sda /root/my_alpine
 
 set -euo pipefail
+if [ "$(id -u)" -ne 0 ]; then
+    echo "Must be executed as root"
+    exit 1
+fi
 
 device=${1}
 mount_point=${2:-/media/persistent}
