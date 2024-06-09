@@ -15,7 +15,7 @@ Usage:
 
     ./encrypted_btrfs_partition <device> <key-file> <name> [<directory> ...]
 
-The <device> is the path to the partition to use, e.g. `/dev/sda1`.
+The <device> is the path to the partition to use, e.g. '/dev/sda1'.
 
 The <key-file> is used to decrypt/open your LUKS container, which should
                contain random data with at least 512 bit entropy (see important
@@ -25,7 +25,7 @@ The <key-file> is used to decrypt/open your LUKS container, which should
 The <name> is whatever you want to name your encrypted device.
 
 The optional directories will be moved into the newly encrypted device, and
-there will be an /etc/fstab entry created for each of them. Note that root (`/`)
+there will be an /etc/fstab entry created for each of them. Note that root ('/')
 is not supported.
 
 Example:

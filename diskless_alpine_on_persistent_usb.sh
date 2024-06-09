@@ -8,8 +8,8 @@ Usage:
     ./diskless_alpine_on_persistent_usb.sh <device> [mount-point]
 
 The script assumes you are running a fresh diskless setup of Alpine Linux and
-just executed `setup-alpine.sh`, and that the Alpine installation is mounted
-under /media/cdrom.
+just executed 'setup-alpine', and that the Alpine installation is mounted under
+/media/cdrom.
 
 The script will wipe the given USB device, create a VFAT file system, and copy
 the current installation and make it bootable. It will update LBU and APK cache
