@@ -37,8 +37,6 @@ if [ ! -e "$device" ]; then
     exit 1
 fi
 
-echo "whatafack '$device'"
-
 . $(dirname $0)/lib.sh
 
 # install required packages
