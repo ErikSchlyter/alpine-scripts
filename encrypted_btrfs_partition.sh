@@ -18,9 +18,9 @@ Usage:
 The <device> is the path to the partition to use, e.g. '/dev/sda1'.
 
 The <key-file> is used to decrypt/open your LUKS container, which should
-               contain random data with at least 512 bit entropy (see important
-               notes below). The file will be created if it doesn't exist.
-               Remember to back it up!
+               contain random data with at least 512 bit entropy (see README.md)
+               The file will be created if it doesn't exist. Remember to back it
+               up in your password storage somewhere!
 
 The <name> is whatever you want to name your encrypted device.
 
@@ -75,6 +75,7 @@ if is_alpine_linux; then
     # Make sure the partition is decrypted upon boot
     rc-update add dmcrypt boot
 cat <<EOT >> /etc/conf.d/dmcrypt
+
 target=$name
 source='$device'
 key='$key_file'
