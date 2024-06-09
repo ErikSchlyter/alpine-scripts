@@ -1,33 +1,34 @@
 #!/bin/sh
-#
-# Creates a BTRFS subvolume on the given device, and replaces the given path
-# with a mount that is added to /etc/fstab
-#
-# requires: blkid btrfs-progs
-#
-# usage:
-#
-#   create_btrfs_subvol.sh <device> <mount_path>
-#
-# examples:
-#
-#   ./create_btrfs_subvol.sh /dev/sdb1 /var/cache
-#   ./create_btrfs_subvol.sh /dev/mapper/encrypted_home /home
-#
 
-set -euo pipefail
-if [ "$(id -u)" -ne 0 ]; then
-    echo "Must be executed as root"
-    exit 1
-fi
+usage="
+Creates a BTRFS subvolume on the given device, and replaces the given path
+with a mount that is added to /etc/fstab. If the mount path already exist, the
+contents will be copied to the newly mounted subvolume.
 
-. ./lib.sh
+Requires: blkid btrfs-progs
+
+Usage:
+
+    ./create_btrfs_subvol.sh <device> <mount_path>
+
+Examples:
+
+    ./create_btrfs_subvol.sh /dev/sdb1 /var/cache
+    ./create_btrfs_subvol.sh /dev/mapper/encrypted_home /home
+
+"
+
+. $(dirname $0)/lib.sh
 
 BTRFS_OPTS="${BTRFS_OPTS:-defaults,noatime,discard=async,space_cache=v2,compress=lzo}"
 
 device="$1"
 mount_path="$2"
 
+if [ ! -e $device ] || [ -z $mount_path ]; then
+    echo $usage
+    exit 1
+fi
 
 # turns "/var/cache" into "@var_cache", or "/" into "@"
 subvolume=$(echo "@$(echo ${mount_path/\//} | sed "s#/#_#g")")
@@ -43,7 +44,7 @@ if [ "$mount_path" != "/" ]; then
         mv $mount_path $tmp_dir
 
         # create the mount path and mount our new subvolume
-        mkdir -v -p $mount_path
+        mkdir -p $mount_path
         mount $mount_path
 
         # move the old content from temporary dir into the new mount path

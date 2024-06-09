@@ -1,6 +1,17 @@
 #!/bin/sh
 
-function device_path_for_partition {
+set -euo pipefail
+if [ "$(id -u)" -ne 0 ]; then
+    >&2 echo  "Must be root to execute this command."
+    exit 1
+fi
+
+is_alpine_linux() {
+    grep 'NAME="Alpine Linux"' /etc/os-release > /dev/null
+}
+
+
+device_path_for_partition() {
     # turns "/dev/nvme0n0" "1" into /dev/nvme0n0p1"
     echo "$(echo "${1}" | sed "s/\([0-9]\)$/\1p/")$2"
 }
