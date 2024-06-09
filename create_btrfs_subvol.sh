@@ -7,12 +7,12 @@
 #
 # usage:
 #
-#   btrfs_subvol_fstab.sh <device> <mount_path>
+#   create_btrfs_subvol.sh <device> <mount_path>
 #
 # examples:
 #
-#   ./btrfs_subvol_fstab.sh /dev/sdb1 /var/cache
-#   ./btrfs_subvol_fstab.sh /dev/mapper/encrypted_home /home
+#   ./create_btrfs_subvol.sh /dev/sdb1 /var/cache
+#   ./create_btrfs_subvol.sh /dev/mapper/encrypted_home /home
 #
 
 set -euo pipefail

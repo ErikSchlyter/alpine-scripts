@@ -85,7 +85,7 @@ mkfs.btrfs $crypt_device
 
 # Move desired folders into the encrypted partition and update /etc/fstab
 for directory in $directories; do
-    ./btrfs_subvol_fstab.sh $crypt_device $directory
+    ./create_btrfs_subvol.sh $crypt_device $directory
 done
 
 # Make sure the partition is decrypted upon boot
