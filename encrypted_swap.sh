@@ -35,7 +35,7 @@ mkswap $crypt_device
 swapon $crypt_device
 rc-update add swap boot
 
-echo -e "$(fstab_id $crypt_device)\tswap\tswap\tdefaults,noatime 0 0" >> /etc/fstab
+echo -e "$(fstab_id $crypt_device)\tnone\tswap\tdefaults,noatime 0 0" >> /etc/fstab
 
 # Note that we use 'target' here instead of 'swap' in dmcrypt configuration,
 # since we only want dmcrypt to open the LUKS container. We'll enable swap
