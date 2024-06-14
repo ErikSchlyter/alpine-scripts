@@ -69,16 +69,11 @@ for directory in $directories; do
     $self_path/create_btrfs_subvol.sh $crypt_device $directory
 done
 
-# we want this script to work under Arch as well, so we check if we're
-# explicitly running Alpine Linux.
-if is_alpine_linux; then
-    # Make sure the partition is decrypted upon boot
-    rc-update add dmcrypt boot
+# Make sure the partition is decrypted upon boot
+rc-update add dmcrypt boot
 cat <<EOT >> /etc/conf.d/dmcrypt
 
 target=$name
 source='$device'
 key='$key_file'
 EOT
-fi
-

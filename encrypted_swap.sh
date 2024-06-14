@@ -37,16 +37,12 @@ rc-update add swap boot
 
 echo -e "$(fstab_id $crypt_device)\tswap\tswap\tdefaults,noatime 0 0" >> /etc/fstab
 
-# we want this script to work under Arch as well, so we check if we're
-# explicitly running Alpine Linux.
-if is_alpine_linux; then
-    # Note that we use 'target' here instead of 'swap' in dmcrypt configuration,
-    # since we only want dmcrypt to open the LUKS container. We'll enable swap
-    # via /etc/fstab and the openrc service.
-    cat <<EOT >> /etc/conf.d/dmcrypt
+# Note that we use 'target' here instead of 'swap' in dmcrypt configuration,
+# since we only want dmcrypt to open the LUKS container. We'll enable swap
+# via /etc/fstab and the openrc service.
+cat <<EOT >> /etc/conf.d/dmcrypt
 
 target=$name
 source='$device'
 key='$key_file'
 EOT
-fi
