@@ -2,7 +2,7 @@
 
 usage="
 Creates a LUKS container with BTRFS file system on the given partition using the
-given key file (which is assumed to contain 512 bit of entropy).
+given key file (which is assumed to contain 256 bit of entropy).
 
 The script assumes the encrypted device will be an additional disk explicitly
 different from the medium the environment was booted from (which would probably
@@ -18,7 +18,7 @@ Usage:
 The <device> is the path to the partition to use, e.g. '/dev/sda1'.
 
 The <key-file> is used to decrypt/open your LUKS container, which should
-               contain random data with at least 512 bit entropy (see README.md)
+               contain random data with at least 256 bit entropy (see README.md)
                The file will be created if it doesn't exist. Remember to back it
                up in your password storage somewhere!
 
@@ -54,9 +54,9 @@ self_path="$(dirname $0)"
 . $self_path/lib.sh
 
 if [ ! -f $key_file ]; then
-    >&2 echo "$key_file not found, so I'll generate a 512 bit random key for you."
+    >&2 echo "$key_file not found, so I'll generate a 256 bit random key for you."
     >&2 echo "REMEMBER TO BACK IT UP in your password storage somewhere!"
-    head -c 64 /dev/random > $key_file
+    head -c 32 /dev/random > $key_file
 fi
 
 create_luks_container "$device" "$key_file" "$name"

@@ -26,9 +26,9 @@ create_luks_container() {
     name=$3
 
     if [ ! -f $key_file ]; then
-        echo "$key_file not found, so I'll generate a 512 bit random key for you."
+        echo "$key_file not found, so I'll generate a 256 bit random key for you."
         echo "REMEMBER TO BACK IT UP in your password storage somewhere!"
-        head -c 64 /dev/random > $key_file
+        head -c 32 /dev/random > $key_file
     fi
 
     # Format the LUKS container
@@ -37,7 +37,6 @@ create_luks_container() {
         --key-file $key_file \
         --pbkdf pbkdf2 \
         --pbkdf-force-iterations 1000 \
-        --hash sha512 \
         $device
 
     # Open the LUKS container using our key

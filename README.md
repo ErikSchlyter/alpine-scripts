@@ -12,13 +12,13 @@ Important notice regarding key file and PBKDF iterations
 --------------------------------------------------------
 If you use any of the disk encryption functions, you should generate a random
 key file that contains at least as much entropy as the output of the key
-derivation function (e.g. `head -c 64 /dev/random > my_key.bin` for a 512 bit
+derivation function (e.g. `head -c 32 /dev/random > my_key.bin` for a 256 bit
 key) rather than an actual passphrase. If the key file already contains that
 much entropy, a PBKDF iteration will not yield any additional security since it
 will be easier to just attack the output of the key derivation function rather
 than the actual key file (and our sun will not generate enough energy to let
 that happen, given the amount of combinations a computer must attempt to
-brute-force a 512 bit key).
+brute-force a 256 bit key).
 
 This means we can set the `pbkdf-force-iterations` to lowest allowed value (i.e.
 1000), making it really fast to decrypt the cipher key.
