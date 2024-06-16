@@ -52,8 +52,11 @@ partition="${device}1"
 mkfs.vfat -F32 $partition
 modprobe vfat
 
-# add our USB media to /etc/fstab
-echo -e "$(fstab_id $partition)\t$mount_point\tvfat\tdefaults,noatime 0 0" >> /etc/fstab
+# add our USB media as the _first_ entry to /etc/fstab, otherwise it will be mounted
+# to /media/usbstick or something.
+echo -e "$(fstab_id $partition)\t$mount_point\tvfat\tdefaults,noatime 0 0" > /tmp/fstab
+cat /etc/fstab >> /tmp/fstab
+mv /tmp/fstab /etc/fstab
 
 # install our diskless Alpine installation on the disk
 mkdir -p -v $mount_point
