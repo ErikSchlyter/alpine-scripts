@@ -1,0 +1,33 @@
+KEYMAPOPTS="se se"
+HOSTNAMEOPTS=myserver
+DEVDOPTS=mdev
+
+# Contents of /etc/network/interfaces
+INTERFACESOPTS="auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+hostname myserver
+"
+# DNSOPTS="-d example.com 8.8.8.8"
+
+TIMEZONEOPTS="Europe/Stockholm"
+PROXYOPTS=none
+
+# Add first mirror (CDN)
+APKREPOSOPTS="-1"
+
+# Create admin user
+#USEROPTS="-a -u -g audio,video,netdev -f Erik erik"
+#USERSSHKEY="http://192.168.1.5:8000/mykey.pub"
+
+# Install Openssh
+SSHDOPTS=openssh
+ROOTSSHKEY="http://192.168.1.5:8000/mykey.pub"
+
+NTPOPTS="chrony"
+DISKOPTS=none
+LBUOPTS=none
+APKCACHEOPTS=none
+
