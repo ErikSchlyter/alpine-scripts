@@ -12,6 +12,7 @@ device_path_for_partition() {
 }
 
 fstab_id() {
+    # Gives the device id to use in fstab entry, which is the UUID
     device=$1
     if uuid=$(blkid $device | sed 's/.* UUID="//' | sed 's/".*//'); then
         echo "UUID=$uuid"
