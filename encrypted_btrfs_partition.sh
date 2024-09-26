@@ -53,12 +53,6 @@ fi
 self_path="$(dirname $0)"
 . $self_path/lib.sh
 
-if [ ! -f $key_file ]; then
-    >&2 echo "$key_file not found, so I'll generate a 256 bit random key for you."
-    >&2 echo "REMEMBER TO BACK IT UP in your password storage somewhere!"
-    head -c 32 /dev/random > $key_file
-fi
-
 create_luks_container "$device" "$key_file" "$name"
 
 crypt_device="/dev/mapper/$name"
