@@ -41,9 +41,9 @@ reconfigurations, etc. It is up to you.
 Base installation
 -----------------
 Download [Alpine Linux Extended](https://alpinelinux.org/downloads/) and either
-boot it up on some virtual machine (I prefer using [QEMU](www.qemu.com)) or an
-another actual computer. Edit the Alpine configuration (`myserver.alpine`) to
-your liking, and serve it (using `python3 -m http.server` or something) from
+boot it up on some virtual machine (I prefer using [QEMU](https://www.qemu.com))
+or an another actual computer. Edit the Alpine configuration (`myserver.alpine`)
+to your liking, and serve it (using `python3 -m http.server` or something) from
 your host so you can reach it from the alpine machine.
 
 Note that you need to serve your public SSH key as well (e.g. `mykey.pub`),
