@@ -96,7 +96,7 @@ Create the zfs pool:
         -O encyrption=on \
         -O keylocation=file:///root/myserver/key.bin \
         -O keyformat=raw \
-        storage raidz1 diskid1 diskid2 disk3
+        storage raidz1 <diskid1> <diskid2> <diskid3>
 
 Create the datasets with given mount points:
 
