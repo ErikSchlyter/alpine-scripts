@@ -41,7 +41,7 @@ reconfigurations, etc. It is up to you.
 Base installation
 -----------------
 Download [Alpine Linux Extended](https://alpinelinux.org/downloads/) and either
-boot it up on some virtual machine (I prefer using [QEMU](https://www.qemu.com))
+boot it up on some virtual machine (I prefer using [QEMU](https://www.qemu.org))
 or an another actual computer. Edit the Alpine configuration (`myserver.alpine`)
 to your liking, and serve it (using `python3 -m http.server` or something) from
 your host so you can reach it from the alpine machine.
