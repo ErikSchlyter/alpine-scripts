@@ -1,3 +1,5 @@
+# This is my personal preferences. You setup yours.
+
 KEYMAPOPTS="se se"
 HOSTNAMEOPTS=myserver
 DEVDOPTS=mdev
