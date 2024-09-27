@@ -37,8 +37,6 @@ if [ ! -e "$device" ]; then
     exit 1
 fi
 
-. $(dirname $0)/lib.sh
-
 # install required packages
 apk add sfdisk blkid
 
@@ -54,7 +52,7 @@ modprobe vfat
 
 # add our USB media as the _first_ entry to /etc/fstab, otherwise it will be mounted
 # to /media/usbstick or something.
-echo -e "$(fstab_id $partition)\t$mount_point\tvfat\tdefaults,noatime 0 0" > /tmp/fstab
+echo -e "UUID=$(blkid $partition -s UUID -o value)\t$mount_point\tvfat\tdefaults,noatime 0 0" > /tmp/fstab
 cat /etc/fstab >> /tmp/fstab
 mv /tmp/fstab /etc/fstab
 
