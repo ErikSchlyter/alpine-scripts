@@ -28,9 +28,7 @@ if [ ! -e "$device" ] || [ -z "$key_file" ]; then
     exit 1
 fi
 
-. $(dirname $0)/lib.sh
-
-create_luks_container "$device" "$key_file" "$name"
+$(dirname $0)/create_luks_container.sh "$device" "$key_file" "$name"
 
 crypt_device="/dev/mapper/$name"
 mkswap $crypt_device

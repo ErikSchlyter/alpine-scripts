@@ -39,6 +39,7 @@ Example:
 
 "
 
+self_path="$(dirname $0)"
 device=$1
 key_file=$2
 name=$3
@@ -50,10 +51,8 @@ if [ ! -e "$device" ] || [ -z "$key_file" ] || [ -z "$name" ]; then
     exit 1
 fi
 
-self_path="$(dirname $0)"
-. $self_path/lib.sh
 
-create_luks_container "$device" "$key_file" "$name"
+$self_path/create_luks_container.sh "$device" "$key_file" "$name"
 
 crypt_device="/dev/mapper/$name"
 mkfs.btrfs $crypt_device
