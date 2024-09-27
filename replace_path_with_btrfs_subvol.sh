@@ -30,15 +30,13 @@ if [ ! -e "$device" ] || [ -z "$mount_path" ]; then
     exit 1
 fi
 
-. $(dirname $0)/lib.sh
-
 # turns "/var/cache" into "@var_cache", or "/" into "@"
 subvolume=$(echo "@$(echo ${mount_path/\//} | sed "s#/#_#g")")
 subvolume_path="/mnt/$subvolume"
 
 mount $device /mnt
 btrfs su create $subvolume_path
-echo -e "$(fstab_id $device)\t$mount_path\tbtrfs\tsubvol=$subvolume,$BTRFS_OPTS 0 0" >> /etc/fstab
+echo -e "UUID=$(blkid $device -s UUID -o value)\t$mount_path\tbtrfs\tsubvol=$subvolume,$BTRFS_OPTS 0 0" >> /etc/fstab
 
 if [ "$mount_path" != "/" ]; then
     if [ -d $mount_path ]; then # the mount path already exists
