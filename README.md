@@ -123,7 +123,7 @@ Partition the SSD for swap and storage. Make sure you get the _correct_ device.
 
 Create swap. Remember to get the correct _partition_, e.g. `/dev/nvme0n1p1`
 
-    ./encrypted_swap.sh /dev/nvme0n1p1 /root/myserver/key.bin crypto-swap
+    ./encrypted_swap.sh /dev/nvme0n1p1 /root/myserver/key.bin crypt-swap
 
 Create encrypted BTRFS partition. Remember the get the correct _partition_, e.g.
 `/dev/nvme0n1p2`
