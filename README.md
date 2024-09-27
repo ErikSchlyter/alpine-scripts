@@ -56,8 +56,8 @@ basic Alpine setup:
 
     setup-alpine -f http://yourhostip:8000/myserver.alpine
 
-Fetch the scripts
------------------
+Get the scripts into the Alpine virtual machine
+-----------------------------------------------
 You need to install `git` to clone this repo, `lsblk` to check the correct
 disk device for USB, and the proper version of `blkid` to get UUID, etc.
 
@@ -68,19 +68,20 @@ You can either clone this repo from a public source:
     git clone https://github.com/ErikSchlyter/alpine-scripts.git
     cd alpine-scripts
 
-...or, you can simply clone it from your host computer. Make sure you have
-executed `git update-server-info` in your host repo, then clone it from there:
+...or, since you're already serving your directory via HTTP, you can simply
+clone it from there. Just make sure you have executed `git update-server-info`
+in your host repo first.
 
     git clone https://yourhostip:8000/.git alpine-scripts
     cd alpine-scripts
 
 Insert the USB stick and make it available for your virtual machine, then use
 `lsblk` to check the device name of your USB. Make *sure* you check the correct
-device (e.g. /dev/sda), because that disk will be _wiped_.
+device (e.g. `/dev/sda`), because that disk will be _wiped_.
 
 Once you know the device path, make the installation persistent by writing it to
-a USB stick and specifying the desired mount point (under `/root/` is a neat
-choice):
+a USB stick and specifying the desired mount point (somehere under `/root/` is a
+neat choice):
 
     ./diskless_alpine_on_persistent_usb.sh /dev/sdXYZ /root/myserver
 
@@ -125,16 +126,15 @@ Create swap. Remember to get the correct _partition_, e.g. `/dev/nvme0n1p1`
 
     ./encrypted_swap.sh /dev/nvme0n1p1 /root/myserver/key.bin crypt-swap
 
-Create encrypted BTRFS partition. Remember the get the correct _partition_, e.g.
-`/dev/nvme0n1p2`
+Create encrypted BTRFS partition and move desired directories into it. Remember
+the get the correct _partition_, e.g.  `/dev/nvme0n1p2`
 
     ./encrypted_btrfs_partition.sh /dev/nvmeXp2 \
                                    /root/myserver/key.bin \
                                    crypt-system \
                                    /home \
                                    /var/log \
-                                   /opt \
-                                   /lab
+                                   /opt
 
 Setup RAIDZ pool on some other disks
 ------------------------------------
