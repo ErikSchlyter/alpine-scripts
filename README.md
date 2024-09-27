@@ -113,7 +113,9 @@ Install the dependencies:
     apk add btrfs-progs cryptsetup
     modprobe btrfs
 
-Partition the SSD for swap and storage. Make sure you get the _correct_ device.
+Partition the SSD for swap and storage. Make sure you get the _correct_ device,
+and set the preferred amount of swap (96G might be a bit much, but I usually go
+with 150% of the machine's RAM)
 
     export DISK=/dev/nvme0n1
     apk add sgdisk
@@ -158,7 +160,7 @@ Create the zfs pool named `storage` (or whatever you want):
         -O encyrption=on \
         -O keylocation=file:///root/myserver/key.bin \
         -O keyformat=raw \
-        storage raidz1 <diskid1> <diskid2> <diskid3>
+        storage raidz1 <diskid1> <diskid2> <diskid3> [diskid_n ...]
 
 Create the desired datasets with given mount points:
 
