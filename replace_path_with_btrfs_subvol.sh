@@ -4,7 +4,7 @@ usage="
 Replaces a given directory path with a BTRFS subvolume that will be created on
 the given device. The new subvolume will be named after the path (slashes
 replaced and such), and the path will be added as an entry in /etc/fstab. If the
-mount path already exist, the contents will be copied to the newly mounted
+mount path already exist, the contents will be moved to the newly mounted
 subvolume.
 
 Requires: blkid btrfs-progs
