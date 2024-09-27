@@ -58,10 +58,10 @@ basic Alpine setup:
 
 Fetch the scripts
 -----------------
-You need to install `git` to clone this repo, and `lsblk` to check the correct
-disk device for USB, etc.
+You need to install `git` to clone this repo, `lsblk` to check the correct
+disk device for USB, and the proper version of `blkid` to get UUID, etc.
 
-    apk add git lsblk
+    apk add git lsblk blkid
 
 You can either clone this repo from a public source:
 
