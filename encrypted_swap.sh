@@ -3,6 +3,8 @@
 usage="
 Creates a LUKS container with encrypted swap on the given partition.
 
+Requires: cryptsetup blkid
+
 Usage:
 
    ./encrypted_swap.sh <device> <key-file> [name]
@@ -35,7 +37,7 @@ mkswap $crypt_device
 swapon $crypt_device
 rc-update add swap boot
 
-echo -e "$(fstab_id $crypt_device)\tnone\tswap\tdefaults,noatime 0 0" >> /etc/fstab
+echo -e "UUID=$(blkid $crypt_device -s UUID -o value)\tnone\tswap\tdefaults,noatime 0 0" >> /etc/fstab
 
 # Note that we use 'target' here instead of 'swap' in dmcrypt configuration,
 # since we only want dmcrypt to open the LUKS container. We'll enable swap

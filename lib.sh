@@ -11,16 +11,6 @@ device_path_for_partition() {
     echo "$(echo "${1}" | sed "s/\([0-9]\)$/\1p/")$2"
 }
 
-fstab_id() {
-    # Gives the device id to use in fstab entry, which is the UUID
-    device=$1
-    if uuid=$(blkid $device | sed 's/.* UUID="//' | sed 's/".*//'); then
-        echo "UUID=$uuid"
-    else
-        echo $device
-    fi
-}
-
 create_luks_container() {
     device=$1
     key_file=$2
