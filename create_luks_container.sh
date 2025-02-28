@@ -32,8 +32,9 @@ fi
 
 if [ ! -f $key_file ]; then
     >&2 echo "$key_file not found, so I'll generate a 256 bit random key for you."
-    >&2 echo "REMEMBER TO BACK IT UP in your password storage somewhere!"
+    >&2 echo "  - REMEMBER TO BACK IT UP in your password storage somewhere!"
     head -c 32 /dev/random > $key_file
+    chmod 400 $key_file
 fi
 
 # Format the LUKS container
