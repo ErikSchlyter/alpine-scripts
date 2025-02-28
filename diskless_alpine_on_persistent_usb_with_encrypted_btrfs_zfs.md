@@ -68,7 +68,7 @@ You can either clone this repo from a public source:
 clone it from there. Just make sure you have executed `git update-server-info`
 in your host repo first.
 
-    git clone https://yourhostip:8000/.git alpine-scripts
+    git clone http://yourhostip:8000/.git alpine-scripts
     cd alpine-scripts
 
 Insert the USB stick and make it available for your virtual machine, then use
