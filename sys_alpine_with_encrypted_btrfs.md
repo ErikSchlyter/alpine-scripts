@@ -6,6 +6,7 @@ the following features:
 
 - Encrypted BTRFS on root, with distinct submodules.
 - Encrypted swap disk for RAM.
+- Encrypted boot using GRUB.
 
 The reason to use this script instead of the default procedure in `setup-disk`
 is because it mounts root to a BTRFS subvolume, and it encrypts swap on a

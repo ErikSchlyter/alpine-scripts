@@ -5,6 +5,8 @@ Creates a LUKS container on the given device partition, using the specified key
 file. If the key file doesn't exist, it will be created with 256 bit random
 data. Once created, the container will also be opened.
 
+The last argument can be either 'luks1' or 'luks2', where luks2 is default.
+
 IMPORTANT NOTICE: It is assumed that the key file contains proper amount of
 entropy (e.g. 256 bit), because the PBKDF function will be set to minimum
 iterations. Do NOT use a simple password in the keyfile!
@@ -13,7 +15,7 @@ Requires: cryptsetup
 
 Usage:
 
-    ./create_luks_container.sh <device-partition> <key-file> <name>
+    ./create_luks_container.sh <device-partition> <key-file> <name> [luks-type]
 
 Examples:
 
@@ -24,6 +26,7 @@ Examples:
 device_partition=$1
 key_file=$2
 name=$3
+luks_type=${4:-luks2}
 
 if [ ! -e "$device_partition" ] || [ -z "$key_file" ] || [ -z "$name" ]; then
     echo "$usage"
@@ -39,6 +42,7 @@ fi
 
 # Format the LUKS container
 cryptsetup luksFormat \
+    --type=$luks_type \
     --batch-mode \
     --key-file $key_file \
     --pbkdf pbkdf2 \

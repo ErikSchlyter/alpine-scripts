@@ -10,7 +10,7 @@ Usage:
 The script assumes you are running a fresh setup of Alpine Linux and just
 executed 'setup-alpine', with 'none' on all the disk related options.
 
-The script will wipe the given disk and create three partitions: an EFI boot
+The script will wipe the given disk and create three partitions: an EFI
 partition, a partition for swap, and the partition for the root filesystem that
 will use BTRFS. It will create additional BTRFS subvolumes for each directory
 specified as argument.
@@ -31,7 +31,7 @@ shift
 subvolume_dirs="/ $@"
 
 BTRFS_OPTS="${BTRFS_OPTS:-defaults,noatime,nodiratime,discard=async,space_cache=v2,compress=zstd}"
-EFI_SIZE="${EFI_SIZE:-300M}"
+EFI_SIZE="${EFI_SIZE:-260M}"
 SWAP_SIZE="${SWAP_SIZE:-1G}"
 
 # the crypto keyfile path is hardcoded in mkinitfs (doh!), which means we should
@@ -63,8 +63,9 @@ efi_part="$(device_path_for_partition $disk 1)"
 swap_part="$(device_path_for_partition $disk 2)"
 system_part="$(device_path_for_partition $disk 3)"
 
-# Create the LUKS container for the root file system
-./create_luks_container.sh $system_part $crypto_keyfile root
+# Create the LUKS container for the root file system. Note that it has to be of
+# type luks1 since GRUB doesn't support luks2 for encrypted boot partition.
+./create_luks_container.sh $system_part $crypto_keyfile root luks1
 
 # Create the file system
 partition="/dev/mapper/root"
@@ -88,8 +89,8 @@ for dir in $subvolume_dirs; do
     mount -o "${BTRFS_OPTS},subvol=$(subvolume $dir)" $partition /mnt${dir%/}
 done
 
-# Setup the boot partition
-efi_dir=/boot
+# Setup the EFI partition
+efi_dir=/boot/efi
 mkfs.vfat -F32 $efi_part
 mkdir -v -p /mnt$efi_dir
 mount -t vfat $efi_part /mnt$efi_dir
@@ -101,16 +102,42 @@ rc-update add dmcrypt boot
 ./encrypted_swap.sh $swap_part $crypto_keyfile swap
 
 # Install Alpine on disk
+#
+# Note that GRUB installation will fail since we're trying to install GRUB on an
+# encrypted device before we had a chance to set GRUB_ENABLE_ENCRYPTION. The
+# setup will at least find appropriate modules for the hardware, so we ignore
+# the error messages so we can do manual installation later.
 export SWAP_DEVICES=/dev/mapper/swap
+export KERNELOPTS="cryptkey quiet udev.log_priority=3"
 setup-disk -m sys /mnt/
 
 
 # Adding passphrase to the LUKS system container, so it can be unlocked by
 # passphrase during boot. Note that we do this after we have created the LUKS
 # containers and the crypto keyfile, since we want the key file (with low PBKDF
-# itations) in the first slot, to make it quick to unlock remaining partitions.
+# iterations) in the first slot, to make it quick to unlock remaining
+# partitions.
 cryptsetup luksAddKey --key-file $crypto_keyfile $system_part
 
 # Move the keyfile to the new system, this is quite important, so that it can be
-# used when decrypting swap
+# used by init to decrypt root and swap.
 mv -v $crypto_keyfile "/mnt${crypto_keyfile}"
+
+# We need to add configuration to GRUB to decrypt boot partition
+echo "GRUB_ENABLE_CRYPTODISK=y" >> /mnt/etc/default/grub
+
+# Prepare choot environment
+mount -t proc /proc /mnt/proc
+mount --rbind /dev /mnt/dev
+mount --make-rslave /mnt/dev
+mount --rbind /sys /mnt/sys
+
+# Install GRUB
+chroot /mnt apk add efibootmgr
+chroot /mnt grub-install --target=x86_64-efi --efi-directory=$efi_dir
+chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+
+# Regenerate initfs, since we need to include our cryptkey feature (and actually
+# pick up the encryption key we moved into target environment earlier)
+sed -i 's/cryptsetup/& cryptkey/' /mnt/etc/mkinitfs/mkinitfs.conf
+mkinitfs -c /mnt/etc/mkinitfs/mkinitfs.conf -b /mnt $(ls /mnt/lib/modules/)
