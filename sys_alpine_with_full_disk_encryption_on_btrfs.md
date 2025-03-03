@@ -1,16 +1,13 @@
-Alpine Linux system on encrypted BTRFS root, with encrypted swap and boot (GRUB)
-================================================================================
+Alpine Linux system installation on BTRFS with full disk encryption (boot/swap)
+===============================================================================
 
 This document explains how to perform a Alpine Linux system installation with
 the following features:
 
-- Encrypted BTRFS on root, with distinct submodules.
-- Encrypted swap disk for RAM.
+- Swap space and BTRFS root in an encrypted LVM2 volume group.
+- Arbitrary BTRFS subvolume mounts.
 - Encrypted boot using GRUB.
-
-The reason to use this script instead of the default procedure in `setup-disk`
-is because it mounts root to a BTRFS subvolume, and it encrypts swap on a
-separate partition. It's also easier to setup/configure additional partitions.
+- Support for suspend/hibernate
 
 Base installation
 -----------------
